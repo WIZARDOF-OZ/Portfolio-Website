@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Wizard of Oz Portfolio
 
-## Getting Started
+A modern portfolio landing page built with **Next.js**, **Tailwind CSS**, and **React Icons**.
 
-First, run the development server:
+## Features
+
+- Responsive portfolio layout with glassmorphism styling
+- Profile banner, avatar, and personal introduction
+- Social link buttons for Twitter, GitHub, Discord, and Instagram
+- Media-style Spotify card showing current track and progress
+- About section and featured project summaries
+- Designed to scale cleanly across mobile, tablet, and desktop
+
+## Installation
+
+From the project root, install dependencies:
+
+```bash
+npm install
+```
+
+Then run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the portfolio.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How to use
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Edit `src/app/page.tsx` to update the landing page content
+- Customize the social links, bio, and featured projects
+- Use Tailwind classes in `globals.css` and component markup to adjust styling
+
+## Project stack
+
+- `next` — frontend framework
+- `react` — UI library
+- `tailwindcss` — utility-first styling
+- `react-icons` — icon components
+
+## Notes
+
+This project was bootstrapped with `create-next-app`. The current page uses `app/page.tsx` as the main entrypoint.
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+For Next.js documentation, visit:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Next.js Deployment](https://nextjs.org/docs/app/building-your-application/deploying)
