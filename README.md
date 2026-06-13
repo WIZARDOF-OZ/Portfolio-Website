@@ -1,4 +1,4 @@
-# Wizard of Oz Portfolio
+# WIZARD OF OZ Portfolio
 
 A modern portfolio landing page built with **Next.js**, **Tailwind CSS**, and **React Icons**.
 

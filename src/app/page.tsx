@@ -5,7 +5,7 @@ import {
   FaXTwitter,
   FaSpotify,
 } from "react-icons/fa6";
-
+import Image from "next/image";
 export default function Home() {
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#0a0a0f]">
@@ -27,9 +27,13 @@ export default function Home() {
           <div className="px-8 pt-0 pb-10">
             {/* Avatar */}
             <div className="relative -mt-12 mb-4">
-              <div className="w-24 h-24 rounded-2xl border-4 border-[#0a0a0f] bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-3xl font-bold text-white">
-                W
-              </div>
+              <Image
+                src="https://github.com/WIZARDOF-OZ.png"
+                alt="Avatar"
+                className="w-24 h-24 rounded-2xl border-4 border-[#0a0a0f] object-cover"
+                width={96}
+                height={96}
+              />
             </div>
 
             {/* Name */}
