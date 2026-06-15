@@ -1,3 +1,5 @@
+"use client";
+import { useState, useEffect } from "react";
 import {
   FaGithub,
   FaDiscord,
@@ -6,7 +8,31 @@ import {
   FaSpotify,
 } from "react-icons/fa6";
 import Image from "next/image";
+interface SpotifyData {
+  isPlaying: boolean;
+  title?: string;
+  artist?: string;
+  albumArt?: string;
+  songUrl?: string;
+  progress?: number;
+  duration?: number;
+}
 export default function Home() {
+  const [spotify, setSpotify] = useState<SpotifyData>({ isPlaying: false });
+
+  useEffect(() => {
+    // Fetch immediately on load
+    const fetchSpotify = async () => {
+      const res = await fetch("/api/spotify");
+      const data = await res.json();
+      setSpotify(data);
+    };
+
+    fetchSpotify();
+    // Then refresh every 30 seconds
+    const interval = setInterval(fetchSpotify, 30000);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#0a0a0f]">
       {/* Aurora blobs */}
