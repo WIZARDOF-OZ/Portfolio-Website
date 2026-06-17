@@ -19,20 +19,31 @@ interface SpotifyData {
 }
 export default function Home() {
   const [spotify, setSpotify] = useState<SpotifyData>({ isPlaying: false });
-
+  const [progress, setProgress] = useState(0);
   useEffect(() => {
-    // Fetch immediately on load
     const fetchSpotify = async () => {
       const res = await fetch("/api/spotify");
       const data = await res.json();
       setSpotify(data);
+      setProgress(data.progress || 0);
     };
 
     fetchSpotify();
-    // Then refresh every 30 seconds
-    const interval = setInterval(fetchSpotify, 30000);
-    return () => clearInterval(interval);
+    const fetchInterval = setInterval(fetchSpotify, 30000);
+
+    return () => clearInterval(fetchInterval);
   }, []);
+
+  // Separate useEffect just for ticking progress
+  useEffect(() => {
+    if (!spotify.isPlaying) return;
+
+    const tick = setInterval(() => {
+      setProgress((prev) => prev + 1000);
+    }, 1000);
+
+    return () => clearInterval(tick);
+  }, [spotify.isPlaying]);
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#0a0a0f]">
       {/* Aurora blobs */}
@@ -136,39 +147,79 @@ export default function Home() {
 
             {/* Spotify Widget */}
             <div className="mt-4 p-3 rounded-2xl bg-white/[0.06] border border-white/15">
-              {/* Top row — album art + track info */}
-              <div className="flex items-center gap-3 mb-3">
-                {/* Album Art */}
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-green-700 flex-shrink-0 flex items-center justify-center text-2xl">
-                  <FaSpotify size={18} className="text-white" />
-                </div>
+              {spotify.isPlaying ? (
+                <>
+                  {/* Top row, album art + track info */}
+                  <div className="flex items-center gap-3 mb-3">
+                    {/* Album Art */}
+                    {spotify.albumArt && (
+                      <Image
+                        src={spotify.albumArt}
+                        alt="Album Art"
+                        width={48}
+                        height={48}
+                        className="rounded-xl flex-shrink-0"
+                      />
+                    )}
 
-                {/* Track Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
-                    <span className="text-green-400 text-xs font-medium">
-                      Listening on Spotify
+                    {/* Track Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
+                        <span className="text-green-400 text-xs font-medium">
+                          Listening on Spotify
+                        </span>
+                      </div>
+                      <a href={spotify.songUrl} target="_blank">
+                        <p className="text-white text-sm font-medium truncate hover:underline">
+                          {spotify.title}
+                        </p>
+                      </a>
+                      <p className="text-white/50 text-xs truncate">
+                        {spotify.artist}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Progress Bar */}
+                  <div className="flex items-center gap-2 px-1">
+                    <span className="text-white/30 text-xs">
+                      {Math.floor(progress! / 1000 / 60)}:
+                      {String(Math.floor((progress! / 1000) % 60)).padStart(
+                        2,
+                        "0",
+                      )}
+                    </span>
+                    <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-green-400 rounded-full transition-all duration-1000"
+                        style={{
+                          width: `${(progress / spotify.duration!) * 100}%`,
+                        }}
+                      />
+                    </div>
+                    <span className="text-white/30 text-xs">
+                      {Math.floor(spotify.duration! / 1000 / 60)}:
+                      {String(
+                        Math.floor((spotify.duration! / 1000) % 60),
+                      ).padStart(2, "0")}
                     </span>
                   </div>
-                  <p className="text-white text-sm font-medium truncate">
-                    Blinding Lights
-                  </p>
-                  <p className="text-white/50 text-xs truncate">The Weeknd</p>
+                </>
+              ) : (
+                /* Not playing */
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-xl flex-shrink-0 from-green-400 to-green-700">
+                    <FaSpotify size={20} className="text-white/50" />
+                  </div>
+                  <div>
+                    <p className="text-white/40 text-sm">
+                      Not playing anything
+                    </p>
+                    <p className="text-white/20 text-xs">Spotify</p>
+                  </div>
                 </div>
-              </div>
-
-              {/* Progress Bar */}
-              <div className="flex items-center gap-2">
-                <span className="text-white/30 text-xs w-6">2:07</span>
-                <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-green-400 rounded-full"
-                    style={{ width: "63%" }}
-                  />
-                </div>
-                <span className="text-white/30 text-xs w-6">3:20</span>
-              </div>
+              )}
             </div>
           </div>
         </div>
