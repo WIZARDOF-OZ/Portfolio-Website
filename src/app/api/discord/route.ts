@@ -1,24 +1,19 @@
-import { NextResponse } from "next/server"
+import { NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-const DISCORD_ID = "583666642010112000"
+const DISCORD_ID = "583666642010112000";
 
 export async function GET() {
   try {
-    const res = await fetch(
-      `https://api.lanyard.rest/v1/users/${DISCORD_ID}`,
-      { 
-        cache: 'no-store',
-        headers: { 'Cache-Control': 'no-cache' }
-      }
-    )
+    const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`, {
+      cache: "no-store",
+    });
 
-    const json = await res.json()
-    const { data } = json
+    const { data } = await res.json();
 
     if (!data) {
-      return NextResponse.json({ status: "offline", activities: [], debug: json })
+      return NextResponse.json({ status: "offline", activities: [] });
     }
 
     return NextResponse.json({
@@ -29,8 +24,8 @@ export async function GET() {
       activities: data.activities,
       listeningToSpotify: data.listening_to_spotify,
       spotify: data.spotify,
-    })
-  } catch (e) {
-    return NextResponse.json({ status: "offline", activities: [], debugError: String(e) })
+    });
+  } catch {
+    return NextResponse.json({ status: "offline", activities: [] });
   }
 }
