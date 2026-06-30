@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 
 const DISCORD_ID = process.env.DISCORD_ID;
@@ -5,9 +6,7 @@ const DISCORD_ID = process.env.DISCORD_ID;
 export async function GET() {
   try {
     const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`, {
-      next: {
-        revalidate: 30,
-      },
+      cache: "no-store",
     });
     const { data } = await res.json();
 

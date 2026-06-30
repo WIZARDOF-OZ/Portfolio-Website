@@ -16,6 +16,7 @@ interface DiscordData {
     name: string;
     details?: string;
     state?: string;
+    type: number;
   }[];
 }
 
@@ -149,14 +150,14 @@ export default function Home() {
 
             {/* Bio */}
             <p className="text-white/70 text-sm leading-relaxed mb-3">
-              Full-stack developer, Discord server manager, & open source
+              Full-stack developer, Discord server manager, & Open source
               enthusiast. Building things that matter.
             </p>
 
             {/* Location & Date */}
             <div className="flex items-center gap-4 mb-4">
               <span className="text-white/40 text-xs">📍 Assam, India</span>
-              <span className="text-white/40 text-xs">📅 Joined June 2025</span>
+              <span className="text-white/40 text-xs">📅 Alive since 2007</span>
             </div>
 
             {/* Divider */}
@@ -331,16 +332,20 @@ export default function Home() {
                     </span>
                   </div>
                   {/* Show current activity if any */}
-                  {discord.activities.length > 0 ? (
-                    <p className="text-white/40 text-xs truncate">
-                      {discord.activities[0].name}
-                      {discord.activities[0].details
-                        ? ` — ${discord.activities[0].details}`
-                        : ""}
-                    </p>
-                  ) : (
-                    <p className="text-white/40 text-xs">No activity</p>
-                  )}
+
+                  {(() => {
+                    const activity = discord.activities.find(
+                      (a) => a.type !== 4,
+                    );
+                    return activity ? (
+                      <p className="text-white/40 text-xs truncate">
+                        {activity.name}
+                        {activity.details ? ` — ${activity.details}` : ""}
+                      </p>
+                    ) : (
+                      <p className="text-white/40 text-xs">No activity</p>
+                    );
+                  })()}
                 </div>
               </div>
               {/* GitHub Stats Widget */}
