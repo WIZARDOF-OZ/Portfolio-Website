@@ -7,6 +7,8 @@ export async function GET() {
   try {
     const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`, {
       cache: "no-store",
+              headers: { 'Cache-Control': 'no-cache' }
+
     });
        console.log("Lanyard response status:", res.status)
          const json = await res.json()
