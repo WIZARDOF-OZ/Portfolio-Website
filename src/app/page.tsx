@@ -334,7 +334,7 @@ export default function Home() {
                   {/* Show current activity if any */}
 
                   {(() => {
-                    const activity = discord.activities.find(
+                    const activity = discord.activities?.find(
                       (a) => a.type !== 4,
                     );
                     return activity ? (
