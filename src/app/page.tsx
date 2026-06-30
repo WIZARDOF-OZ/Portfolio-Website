@@ -28,6 +28,22 @@ interface SpotifyData {
   progress?: number;
   duration?: number;
 }
+
+interface GithubData {
+  username: string;
+  avatar: string;
+  followers: number;
+  following: number;
+  publicRepos: number;
+  totalStars: number;
+  topRepos: {
+    name: string;
+    description: string | null;
+    language: string | null;
+    url: string;
+    stars: number;
+  }[];
+}
 export default function Home() {
   const [spotify, setSpotify] = useState<SpotifyData>({ isPlaying: false });
   const [progress, setProgress] = useState(0);
@@ -76,6 +92,21 @@ export default function Home() {
     const interval = setInterval(fetchDiscord, 30000);
     return () => clearInterval(interval);
   }, []);
+
+  // github
+  const [github, setGithub] = useState<GithubData | null>(null);
+  useEffect(() => {
+    const fetchGithub = async () => {
+      const res = await fetch("/api/github");
+      const data = await res.json();
+      setGithub(data);
+    };
+
+    fetchGithub();
+    // GitHub data doesn't change often, refresh every 5 minutes
+    const interval = setInterval(fetchGithub, 300000);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#0a0a0f]">
       {/* Aurora blobs */}
@@ -86,7 +117,7 @@ export default function Home() {
       </div>
 
       {/* Page content */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen p-8">
+      <div className="relative z-10 flex items-center justify-center min-h-screen py-16 p-6">
         {/* Profile Card */}
         <div className="w-full max-w-lg rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl">
           {/* Banner */}
@@ -177,7 +208,7 @@ export default function Home() {
             {/* Divider */}
             <div className="border-t border-white/10 mt-4 mb-4" />
             {/* Widgets */}
-            <div className="mt-4 space-y-3 mb-4">
+            <div className="space-y-4">
               {/* Spotify Widget */}
               <div className=" p-3 rounded-2xl bg-white/[0.06] border border-white/15">
                 {spotify.isPlaying ? (
@@ -312,6 +343,51 @@ export default function Home() {
                   )}
                 </div>
               </div>
+              {/* GitHub Stats Widget */}
+              {github && (
+                <div className="p-3 rounded-2xl bg-white/[0.06] border border-white/15">
+                  {/* Stats row */}
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <FaGithub size={16} className="text-white" />
+                      <span className="text-white text-sm font-medium">
+                        GitHub
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 text-xs text-white/50">
+                      <span>⭐ {github.totalStars}</span>
+                      <span>📦 {github.publicRepos}</span>
+                      <span>👥 {github.followers}</span>
+                    </div>
+                  </div>
+
+                  {/* Top repos */}
+                  <div className="space-y-2">
+                    {github.topRepos.map((repo) => (
+                      <a
+                        key={repo.name}
+                        href={repo.url}
+                        target="_blank"
+                        className="block p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] transition-all duration-200 group border border-white/10 hover:border-white/20"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-white/80 text-xs font-medium group-hover:text-white truncate transition-colors">
+                            {repo.name}
+                          </span>
+                          <span className="text-white/40 text-xs flex-shrink-0 ml-2 group-hover:text-white/60 transition-colors">
+                            ⭐ {repo.stars}
+                          </span>
+                        </div>
+                        {repo.description && (
+                          <p className="text-white/40 text-xs truncate mt-1 group-hover:text-white/60 transition-colors">
+                            {repo.description}
+                          </p>
+                        )}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
