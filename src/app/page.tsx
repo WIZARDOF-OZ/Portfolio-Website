@@ -315,7 +315,7 @@ export default function Home() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-white text-sm font-medium truncate">
-                      Discord
+                      WIZARD OF OZ
                     </span>
                     <span
                       className={`text-xs font-medium
