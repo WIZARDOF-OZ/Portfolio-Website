@@ -1,21 +1,26 @@
-import { NextResponse } from "next/server";
-export const dynamic = "force-dynamic";
+import { NextResponse } from "next/server"
 
-const DISCORD_ID = process.env.DISCORD_ID;
+export const dynamic = 'force-dynamic'
+
+const DISCORD_ID = "583666642010112000"
 
 export async function GET() {
   try {
-    const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`, {
-      cache: "no-store",
-      headers: { "Cache-Control": "no-cache" },
-    });
-    console.log("Lanyard response status:", res.status);
-    const json = await res.json();
-    console.log("Lanyard full response:", JSON.stringify(json));
-    const { data } = json;
+    const res = await fetch(
+      `https://api.lanyard.rest/v1/users/${DISCORD_ID}`,
+      { 
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' }
+      }
+    )
+
+    const json = await res.json()
+    const { data } = json
+
     if (!data) {
-      return NextResponse.json({ status: "offline", activities: [] });
+      return NextResponse.json({ status: "offline", activities: [], debug: json })
     }
+
     return NextResponse.json({
       status: data.discord_status,
       username: data.discord_user.username,
@@ -24,13 +29,8 @@ export async function GET() {
       activities: data.activities,
       listeningToSpotify: data.listening_to_spotify,
       spotify: data.spotify,
-    });
+    })
   } catch (e) {
-    console.log("Discord API error:", e);
-    return NextResponse.json({
-      status: "offline",
-      activities: [],
-      error: String(e),
-    });
+    return NextResponse.json({ status: "offline", activities: [], debugError: String(e) })
   }
 }
