@@ -4,6 +4,7 @@
   margin: 0;
   padding: 1px;
   box-sizing: border-box;
+  curosr: none !important
 }
 
 body {
@@ -59,4 +60,12 @@ body {
 .social-btn:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Media queries */
+
+@media (max-width:768px){
+  *{
+    cursor: auto !important;
+  }
 }
