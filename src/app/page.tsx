@@ -120,7 +120,7 @@ export default function Home() {
       {/* Page content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen py-16 p-6">
         {/* Profile Card */}
-        <div className="w-full max-w-lg rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl">
+        <div className="w-full max-w-xl rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl">
           {/* Banner */}
           <div className="h-36 w-full rounded-t-3xl bg-gradient-to-r from-purple-600/60 via-blue-600/60 to-pink-600/60" />
 
@@ -211,46 +211,46 @@ export default function Home() {
             {/* Widgets */}
             <div className="space-y-4">
               {/* Spotify Widget */}
-              <div className=" p-3 rounded-2xl bg-white/[0.06] border border-white/15">
+              <div className="p-3 rounded-2xl bg-white/[0.06] border border-white/15">
                 {spotify.isPlaying ? (
                   <>
-                    {/* Top row, album art + track info */}
-                    <div className="flex items-center gap-3 mb-3">
+                    {/* Top row */}
+                    <div className="flex items-center gap-2 mb-2">
                       {/* Album Art */}
                       {spotify.albumArt && (
                         <Image
                           src={spotify.albumArt}
                           alt="Album Art"
-                          width={48}
-                          height={48}
-                          className="rounded-xl flex-shrink-0"
+                          width={40}
+                          height={40}
+                          className="rounded-lg flex-shrink-0"
                         />
                       )}
 
                       {/* Track Info */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
-                          <span className="text-green-400 text-xs font-medium">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
+                          <span className="text-green-400 text-[10px] font-medium">
                             Listening on Spotify
                           </span>
                         </div>
                         <a href={spotify.songUrl} target="_blank">
-                          <p className="text-white text-sm font-medium truncate hover:underline">
+                          <p className="text-white text-xs font-semibold truncate hover:underline leading-tight">
                             {spotify.title}
                           </p>
                         </a>
-                        <p className="text-white/50 text-xs truncate">
+                        <p className="text-white/50 text-[10px] truncate leading-tight">
                           {spotify.artist}
                         </p>
                       </div>
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="flex items-center gap-2 px-1">
-                      <span className="text-white/30 text-xs">
-                        {Math.floor(progress! / 1000 / 60)}:
-                        {String(Math.floor((progress! / 1000) % 60)).padStart(
+                    <div className="flex items-center gap-2">
+                      <span className="text-white/30 text-[10px] w-7 text-right flex-shrink-0">
+                        {Math.floor(progress / 1000 / 60)}:
+                        {String(Math.floor((progress / 1000) % 60)).padStart(
                           2,
                           "0",
                         )}
@@ -263,7 +263,7 @@ export default function Home() {
                           }}
                         />
                       </div>
-                      <span className="text-white/30 text-xs">
+                      <span className="text-white/30 text-[10px] w-7 flex-shrink-0">
                         {Math.floor(spotify.duration! / 1000 / 60)}:
                         {String(
                           Math.floor((spotify.duration! / 1000) % 60),
@@ -272,9 +272,8 @@ export default function Home() {
                     </div>
                   </>
                 ) : (
-                  /* Not playing */
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-xl flex-shrink-0 from-green-400 to-green-700">
+                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
                       <FaSpotify size={20} className="text-white/50" />
                     </div>
                     <div>
